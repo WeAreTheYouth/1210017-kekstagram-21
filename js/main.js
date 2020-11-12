@@ -11,29 +11,34 @@ const randomNumber = function (min, max) {
 };
 
 // случайный элемент массива
-let randomMassive = function (arr) {
+let randomElement = function (arr) {
   let rand = Math.floor(Math.random() * arr.length);
   return arr[rand];
 };
 
 // Объект с коментарием
-const comment = function () {
-  let createComment = {
-    avatar: `img/avatar-${randomNumber(1, 6)}.svg`,
-    message: randomMassive(MESAGES),
-    name: randomMassive(AUTOR_NAMES)
-  };
-  return createComment;
+const createComment = function () {
+  let comments = [];
+
+  for (let i = 0; i < randomNumber(1, 5); i++) {
+    let randomComment = {
+      avatar: `img/avatar-${randomNumber(1, 6)}.svg`,
+      message: randomElement(MESAGES),
+      name: randomElement(AUTOR_NAMES)
+    };
+    comments.push(randomComment);
+  }
+  return comments;
 };
 
 // Массив описания фотографии
 const randomDescription = function () {
   for (let i = 1; i <= IMG_QUANTITY; i++) {
     let createFotoDescription = {
-      url: `photos/${i}`,
+      url: `photos/${i}.jpg`,
       description: `Описание фотографии`,
       likes: randomNumber(15, 200),
-      comments: comment()
+      comments: createComment()
     };
     fotoDescription.push(createFotoDescription);
   }
@@ -46,13 +51,13 @@ const pictureTemplate = document.querySelector(`#picture`)
     .querySelector(`.picture`);
 
 const createImg = function (img) {
-  let pictureImg = pictureTemplate.cloneNode(true);
+  let imgCopy = pictureTemplate.cloneNode(true);
 
-  pictureImg.querySelector(`.picture__img`).src = img.url;
-  pictureImg.querySelector(`.picture__comments`).textContent = img.comments;
-  pictureImg.querySelector(`.picture__likes`).textContent = img.likes;
+  imgCopy.querySelector(`.picture__img`).src = img.url;
+  imgCopy.querySelector(`.picture__comments`).textContent = img.comments.length;
+  imgCopy.querySelector(`.picture__likes`).textContent = img.likes;
 
-  return pictureImg;
+  return imgCopy;
 };
 
 const fragment = document.createDocumentFragment();
